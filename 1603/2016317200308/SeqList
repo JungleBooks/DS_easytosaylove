@@ -1,0 +1,78 @@
+#include<stdio.h>
+#define MAXSIZE 100
+
+typedef struct
+{
+    int elem[MAXSIZE];
+    int last;
+}SeqList;
+void add(SeqList* l, int e, int i)
+{
+    if(i > l->last ) printf("the elementlist is full");
+    else
+    {
+        int j;
+         for( j =  l->last; j >= i; j--)
+        {
+
+            l->elem[j+1] = l->elem[j];
+        }
+        l->elem[i] = e;
+        l->last += 1;
+    }
+}
+
+void subtract(SeqList* l, int j)
+{
+    int i;
+    for( i = j; i < l->last; i++)
+    {
+        l->elem[i] = l->elem[i+1];
+    }
+    l->last -= 1;
+}
+void change(SeqList* l, int e, int i)
+{
+   l->elem[i] = e;
+}
+void search(SeqList* l, int i)
+{
+    printf("%d",l->elem[i]);
+
+}
+void show(SeqList* l)
+{
+    int i;
+    for( i = 0; i < l->last; i++)
+    printf("%d  ",l->elem[i]);
+    printf("\n");
+}
+int main()
+
+{
+    SeqList list;
+    list.last = 0;
+    int e;
+    scanf("%d",&e);
+    int i = 0;
+    while(e != -1)
+    {
+            list.elem[i] = e;
+            list.last++;
+            scanf("%d",&e);
+            i++;
+    }
+show(&list);
+
+    add(&list,23,1);
+    show(&list);
+
+    subtract(&list,4);
+    show(&list);
+
+    change(&list,123,3);
+    show(&list);
+
+    search(&list,3);
+    return 0;
+}
