@@ -1,0 +1,112 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    char data;
+    struct Node* next;
+}Node,*SingleLinkList;
+
+void CreatFromHead(SingleLinkList L)
+{
+    Node* s;
+    char x;
+    int flag = 1;
+    printf("CreatFromHead: ");
+    while(flag)
+    {
+         x = getchar();
+         if(x != '$')
+        {
+            s = (Node*)malloc(sizeof(Node));
+            s->next = L->next;
+            L->next = s;
+            s->data = x;
+        }
+        else flag = 0;
+    }
+
+}
+void CreatFromRear(SingleLinkList L)
+{
+    Node* r, *s;
+    r = L;
+    char x;
+    int flag = 1;
+        printf("CreatFromRear: ");
+    while(flag)
+    {
+        x = getchar();
+        if(x != '$')
+        {
+            s = (Node*)malloc(sizeof(Node));
+            s->data = x;
+            r->next = s;
+            r = s;
+            r->next = NULL;
+        }
+        else flag = 0;
+    }
+}
+void AddAfter(SingleLinkList L, Node *s, char x)
+{
+    Node* p;
+    p = L;
+    while(p->next->data != x) p = p->next;
+    s->next = p->next;
+    p->next = s;
+}
+void SubtractAfter(SingleLinkList L, char x)
+{
+    Node* p;
+    p = L;
+    while(p->next->data !=x) p = p->next;
+    p->next = p->next->next;
+}
+void ChangeAfter(SingleLinkList L,char x)
+{
+    Node* p;
+    p = L;
+    while(p->next->data != x) p = p->next;
+    p->next->data = x;
+}
+void Search(SingleLinkList L, int i)
+{
+    Node* p;
+    p = L;
+    int j = 1;
+    while(j != i) p = p->next;
+    printf("%c",p->next->data);
+}
+void Show(SingleLinkList L)
+{
+    Node* p;
+    p = L;
+    printf("Link list: ");
+    while(p->next != NULL)
+    {
+        p = p->next;
+        printf("%c  ",p->data);
+    }
+    printf("\n");
+}
+int main()
+{
+    SingleLinkList L1 = (Node*)malloc(sizeof(Node));
+    L1->next = NULL;
+    CreatFromHead(L1);
+    Show(L1);
+
+    SingleLinkList L2 = (Node*)malloc(sizeof(Node));
+    L2->next = NULL;
+    CreatFromRear(L2);
+    Show(L2);
+
+    Node* s;
+    s->data = 's';
+    AddAfter(L1,s,'e');
+    Show(L1);
+
+
+    return 0;
+}
