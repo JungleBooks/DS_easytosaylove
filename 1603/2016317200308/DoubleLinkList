@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    char data;
+    struct Node* head;
+    struct Node* rear;
+}Node, *DoubleLinkList;
+
+void CreatFromHead(DoubleLinkList L)
+{
+    printf("CreatFromHead: ");
+    Node* p;
+    int flag = 1;
+    char c;
+    c = getchar();
+    while(flag)
+    {
+        if(c != '$')
+        {
+            p = (Node*)malloc(sizeof(Node));
+            p->data = c;
+            p->head = L;
+            p->rear = L->rear;
+            L->rear->head = p;
+            L->rear = p;
+            c = getchar();
+        }
+        else flag = 0;
+    }
+}
+
+void CreatFromRear(DoubleLinkList L)
+{
+    printf("CreatFromRear: ");
+    Node* p;
+    int flag = 1;
+    char c;
+    c = getchar();
+    while(flag)
+    {
+        if(c != '$')
+        {
+            p = (Node*)malloc(sizeof(Node));
+            p->data = c;
+            p->head = L->rear;
+            p->rear = L;
+            L->head->rear = p;
+            L->head = p;
+            c = getchar();
+        }
+        else flag = 0;
+    }
+}
+
+void SubAfter(DoubleLinkList L, char data )
+{
+    Node* p;
+    p = L;
+    while(p->data != data) p = p->rear;
+    p->head->rear = p->rear;
+    p->rear->head = p->head;
+    free(p);
+}
+
+void Change(DoubleLinkList L, char aimdata , char intodata)
+{
+    Node* p;
+    p = L;
+    while(p->data != aimdata) p = p->rear;
+    p->data = intodata;
+}
+
+void Search(DoubleLinkList L, int i)
+{
+    Node* p;
+    p = L;
+    int j = 0;
+    while(j != i)
+    {
+        p = p->rear;
+        printf("%c",p->data);
+        j++;
+    }
+}
+
+void Show(DoubleLinkList L)
+{
+    printf("DoubleLinkList: ");
+    Node* p;
+    p = L;
+    while(p->rear != L)
+    {
+        printf("%c",p->data);
+        p = p->rear;
+    }
+}
+
+int main()
+{
+    DoubleLinkList L;
+
+
+    CreatFromHead(L);
+    Show(L);
+
+    DoubleLinkList L2;
+
+
+    CreatFromRear(L2);
+    Show(L2);
+
+    SubAfter(L,'w');
+    Show(L);
+
+    Change(L2,'s','a');
+    Show(L2);
+
+    Search(L2,3);
+    return 0;
+}
