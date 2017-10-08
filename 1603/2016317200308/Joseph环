@@ -1,0 +1,105 @@
+#include<stdio.h>
+#include<malloc.h>
+
+typedef struct Node //构建结点
+{
+    int Num;
+    struct Node *next;
+}josephNode,*Head,*Rear;
+
+int josephInit(Head *h)  //初始化单链表
+{
+    if(!h)
+    {
+        printf("无效初始化\n");
+    }
+   (*h)->next = *h;
+    return 1;
+}
+
+int josephInsert(josephNode *h,int pos,int x) //插入结点
+{
+    Rear p = h;
+    Rear q;
+    int i = 1;
+    if(pos == 1)
+    {
+        p->Num = x;
+        p->next = p;
+        return 1;
+    }
+    while(i < pos-1)
+    {
+        p = p->next;
+        i++;
+    }
+    q = (Rear)malloc(sizeof(josephNode));
+    q->Num = x;
+    q->next = p->next;
+    p->next = q;
+    return 1;
+}
+
+void ThroughList(Head h,int M)  //遍历链表
+{
+    int i = 0;
+    Rear p = h;
+    printf("参与的人的编号为：\n");
+    while(i < M)
+    {
+        printf("%d\t",p->Num);
+        p = p->next;
+        i++;
+    }
+    printf("\n");
+}
+
+int josephDelete(Rear h,int M,int k)  //出局并删除
+{
+    int i;
+    Rear p = h;
+    Rear q;
+    while(M > 1)
+    {
+        for(i = 1;i < k-1;i++)
+        {
+            p = p->next;
+        }
+        q = p->next;
+        p->next = q->next;
+        printf("出局的人为:%d\n",q->Num);
+        free(q);
+        p = p->next;
+        M--;
+    }
+    printf("获胜者为:%d\n",p->Num);
+    return 1;
+}
+
+int main()
+{
+    int i;
+    int N;
+    int k;
+    printf("请输入参与人数:\n");
+    scanf("%d",&N);
+    printf("请输入出局密码:\n");
+    scanf("%d",&k);
+    Head h = (Head)malloc(sizeof(josephNode));
+    josephInit(&h);
+    for(i = 1;i <= N;i++)
+    {
+        josephInsert(h,i,i);
+    }
+    ThroughList(h,N);
+    if(k > 1)
+        josephDelete(h,N,k);
+    else
+    {
+        for(i = 1;i < N;i++)
+            printf("出局的人为:%d\n",i);
+        printf("获胜者为:%d",N);
+    }
+    printf("\n");
+    return 0;
+}
