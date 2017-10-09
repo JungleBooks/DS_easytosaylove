@@ -1,0 +1,68 @@
+#include<stdio.h>
+#define MAXLEN 40
+
+typedef struct //串的结构化定义
+{
+    char ch[MAXLEN];
+    int len;
+}SString;
+/*
+    Init()用于初始化一个串，且有提示用户输入
+*/
+void Init(SString *s)  
+{
+    printf("input some charters and use '$' to end\n");
+    char c;
+    char ch[40];
+    c = getchar();
+    int i = 0;
+    while(c != '$')
+    {
+            ch[i] = c;
+            c = getchar();
+            i++;
+    }
+    s = ch;
+    s->len = i+1;
+}
+
+/*
+    StrInsert()函数将t串插入到s串的pos位置
+    这里注意分情况讨论，讨论标准为插入后串长与最大长度的关系
+*/
+int StrInsert(SString *s, SString *t, int pos)
+{
+    int i;
+    if(pos < 0 || pos > MAXLEN) { printf("position error!\n"); return -1; }
+    if(s->len+t->len < MAXLEN)
+    {
+        for(i = s->len+t->len-1; i >= t->len+pos; i--) {  s->ch[i] = s->ch[i-t->len]; }
+        for(i = 0; i < t->len; t++) { s->ch[pos+i] = t->ch[i]; }
+        s->len += t->len;
+    }
+    else if(s->len+t->len > MAXLEN && pos+t->len <= MAXLEN)
+    {
+        for(i = MAXLEN-1; i > pos+t->len-1; i-- ) { s->ch[i] = s->ch[i-t->len]; }
+        for(i =0; i < t->len; i++) { s->ch[pos+i] = t->ch[i]; }
+        s->len = MAXLEN;
+    }
+    else if(s->len+t->len > MAXLEN && pos+t->len > MAXLEN)
+    {
+        for(i = 0 ; i < MAXLEN-pos; i++) { s->ch[pos+i] = t->ch[i]; }
+        s->len = MAXLEN;
+    }
+    return 1;
+}
+
+int main()
+{
+    SString s;
+    Init(&s);
+    SString t;
+    Init(&t);
+    printf("input the position to insert:\n");
+    int pos;
+    scanf("%d",&pos);
+   int flag = StrInsert(&s,&t,pos);
+    return 0;
+}
